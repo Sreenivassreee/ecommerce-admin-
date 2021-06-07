@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "574229429220",
+    "project_id": "ecommerce-bbbe9",
+    "storage_bucket": "ecommerce-bbbe9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574229429220:android:a8dd15c4aa299e6ba7e5f1",
+        "android_client_info": {
+          "package_name": "com.example.admin_for_e_commerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574229429220-ttb5lp3f3ic64tq37dis2tgltpv029pt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPv19BXBW4UzhejjDNIsyrzipneT56ywg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574229429220-ttb5lp3f3ic64tq37dis2tgltpv029pt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574229429220:android:8635da763bc13c8aa7e5f1",
+        "android_client_info": {
+          "package_name": "com.example.shop_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574229429220-0sj6ncnk4o0rhkonqsvv4on4jr5hlmoc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shop_app",
+            "certificate_hash": "84f2f72ba4b1cecd5b31b9bd202dd8edd2b7a974"
+          }
+        },
+        {
+          "client_id": "574229429220-ttb5lp3f3ic64tq37dis2tgltpv029pt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPv19BXBW4UzhejjDNIsyrzipneT56ywg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574229429220-ttb5lp3f3ic64tq37dis2tgltpv029pt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
