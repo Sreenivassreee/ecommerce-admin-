@@ -97,8 +97,6 @@ class _AddEachProductsPageState extends State<AddEachProductsPage> {
                 height: 10,
               ),
               TextButton(onPressed: (){}, 
-              
-              
               child: Text("Submit"),)
             ],
           ),

@@ -1,4 +1,4 @@
-import 'package:admin_for_e_commerce/screens/AddProducts.dart';
+import 'package:admin_for_e_commerce/screens/HomeScreen/AddProductPage/AddProducts.dart';
 import 'package:admin_for_e_commerce/screens/HomeScreen/homeScreen.dart';
 import 'package:flutter/material.dart';
 

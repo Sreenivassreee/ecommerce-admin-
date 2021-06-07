@@ -1,7 +1,7 @@
 import 'package:admin_for_e_commerce/screens/HomeScreen/AddProductPage/componets/AddEachProductPage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import './global.dart';
+import '../../global.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Add_products extends StatelessWidget {
@@ -15,6 +15,8 @@ class Add_products extends StatelessWidget {
                   categetyName: categoryName,
                 )));
   }
+
+  FullScreenDialog _myDialog = new FullScreenDialog();
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +103,14 @@ class Add_products extends StatelessWidget {
                       "Add Chategeries",
                       style: TextStyle(fontSize: 20),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                            builder: (BuildContext context) => _myDialog,
+                            fullscreenDialog: true,
+                          ));
+                    },
                   ),
                 ),
               ),
@@ -110,5 +119,55 @@ class Add_products extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class FullScreenDialog extends StatefulWidget {
+  String caregory = "You have";
+  String pictureUrl = "not Added";
+
+  @override
+  FullScreenDialogState createState() => new FullScreenDialogState();
+}
+
+class FullScreenDialogState extends State<FullScreenDialog> {
+  TextEditingController caregoryController = new TextEditingController();
+  TextEditingController urlController = new TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Add New Category"),
+        ),
+        body: new Padding(
+            child: new ListView(
+              children: <Widget>[
+                new TextField(
+                  controller: caregoryController,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "Enter name of the categoty"),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                new TextField(
+                  controller: urlController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Url",
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Save"),
+                )
+              ],
+            ),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30)));
   }
 }
