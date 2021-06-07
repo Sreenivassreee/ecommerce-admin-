@@ -1,34 +1,40 @@
 import 'package:admin_for_e_commerce/size_config.dart';
 import 'package:flutter/material.dart';
 
-
 class CategeriesCard extends StatelessWidget {
-  final image,category,numOfBrands;
-  CategeriesCard({this.image,this.category,this.numOfBrands});
+  final image, category, numOfBrands;
+  GestureTapCallback? ontap;
+  CategeriesCard({this.image, this.category, this.numOfBrands, @required this.ontap});
+
+  
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-      child: Expanded(
+    return Container(
+      height: 120,
+     
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         child: GestureDetector(
-            onTap: (){},
-            child: SizedBox(
-              width: 30,
-              height: 180,
-              // width: getProportionateScreenWidth(242),
-              // height: getProportionateScreenWidth(100),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+          onTap: () {},
+          child: Container(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: InkWell(
+                onTap: ontap,
                 child: Stack(
                   children: [
-                  Container(
-                    alignment: Alignment.center,
-                  
-                    child: Image.network(image,
-                  alignment: Alignment.center,
-                  fit: BoxFit.fitWidth,),
-                  
-                  ),
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.center,
+                        
+                        child: Image.network(
+                          
+                          image,
+                          
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
                     Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -43,9 +49,9 @@ class CategeriesCard extends StatelessWidget {
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal:20, 
+                        horizontal: 20,
                         // getProportionateScreenWidth(15.0),
-                        vertical:10,
+                        vertical: 10,
                         //  getProportionateScreenWidth(10),
                       ),
                       child: Center(
@@ -70,7 +76,7 @@ class CategeriesCard extends StatelessWidget {
                 ),
               ),
             ),
-        
+          ),
         ),
       ),
     );
