@@ -4,8 +4,10 @@ class Fire {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<List> readCategory() async {
-    print("================================================");
+
     QuerySnapshot querySnapshot;
+    
+
     List docs = [];
     try {
       querySnapshot = await firestore
@@ -30,4 +32,6 @@ class Fire {
     }
     return docs;
   }
+
+
 }

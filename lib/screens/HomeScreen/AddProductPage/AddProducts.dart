@@ -1,7 +1,10 @@
+import 'package:admin_for_e_commerce/GetX/GetX_add_category.dart';
 import 'package:admin_for_e_commerce/screens/HomeScreen/AddProductPage/componets/AddEachProductPage.dart';
 import 'package:admin_for_e_commerce/screens/Services/firebase/firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import '../../global.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -12,14 +15,15 @@ class Add_products extends StatefulWidget {
 
 class _Add_productsState extends State<Add_products> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-
+  final AddCataController? c = AddCataController();
+  Future? myFuture;
   void navigate(context, categoryName) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => AddEachProductsPage(
                   categetyName: categoryName,
-                )));
+                ),),);
   }
 
   FullScreenDialog _myDialog = new FullScreenDialog();
@@ -29,18 +33,19 @@ class _Add_productsState extends State<Add_products> {
   @override
   void initState() {
     super.initState();
-
-    print("Read Called");
+    c?.getData();
   }
 
-  getData() {
-    f.readCategory().then((value) => setState(() {
-          dataList = value;
-        }));
-  }
+  // getData() {
+  //   f.readCategory().then((value) => setState(() {
+  //         dataList = value;
+  //       }));
+  // }
 
   @override
   Widget build(BuildContext context) {
+    print("Read Called");
+    print(c?.data);
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -49,25 +54,19 @@ class _Add_productsState extends State<Add_products> {
           children: [
             Container(
               child: Expanded(
-                  child: FutureBuilder(
-                      future: getData(),
-                      builder: (BuildContext context, data) {
-                        return data != null
-                            ? ListView.builder(
-                                itemCount: dataList.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return CategeriesCard(
-                                    image:
-                                        dataList[index]['url'],
-                                    category: dataList[index]['name'],
-                                    numOfBrands: 18,
-                                    ontap: () {
-                                      navigate(context, "SmartPhone");
-                                    },
-                                  );
-                                })
-                            : Center(child: CircularProgressIndicator());
-                      })
+                  child: Obx(() => ListView.builder(
+                            itemCount: c?.data.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return CategeriesCard(
+                                image: c?.data[index]['url'] ?? " ",
+                                category: c?.data[index]['name'],
+                                numOfBrands: 18,
+                                ontap: () {
+                                  navigate(context, c?.data[index]['name']);
+                                },
+                              );
+                            
+                      }))
 
                   // ListView.builder(
                   //   itemCount: dataList.length,

@@ -2,10 +2,11 @@ import 'package:admin_for_e_commerce/LoginPage.dart';
 import 'package:admin_for_e_commerce/screens/Services/firebase/firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_core/firebase_core.dart' as firebase_core; 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+   await firebase_core.Firebase.initializeApp();
   runApp(MyApp());
 }
 
