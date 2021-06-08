@@ -4,9 +4,7 @@ class Fire {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<List> readCategory() async {
-
     QuerySnapshot querySnapshot;
-    
 
     List docs = [];
     try {
@@ -19,7 +17,7 @@ class Fire {
       if (querySnapshot.docs.isNotEmpty) {
         for (var doc in querySnapshot.docs.toList()) {
           print(doc['url']);
-          var a = {'name': doc.id, 'url': doc['url']??"Empty"};
+          var a = {'name': doc.id, 'url': doc['url'] ?? "Empty"};
           docs.add(a);
         }
         print(docs);
@@ -33,5 +31,27 @@ class Fire {
     return docs;
   }
 
+  Future<void> uploadProducts(
+      {cata,name, brand, model, price, availability,url}) async {
+    try {
+      await firestore
+          .collection('admin')
+          .doc('Product_categories')
+          .collection('categories')
+          .doc("${cata}")
+          .collection('${cata}')
+          .add({
+        'name': name.toString(),
+        'brand': brand.toString(),
+        'model': model.toString(),
+        'price': price.toString(),
+        'url': url.toString(),
+        'availability':availability.toString()
 
+      });
+    } catch (e) {
+      print(e);
+      print("Failed to upload");
+    }
+  }
 }

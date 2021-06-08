@@ -1,6 +1,7 @@
 import 'dart:io' as io;
 import 'dart:io';
 
+import 'package:admin_for_e_commerce/screens/Services/firebase/firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart'
     as firebase_storage; // For File Upload To Firestore
 
@@ -18,17 +19,19 @@ class AddEachProductsPage extends StatefulWidget {
 
 class _AddEachProductsPageState extends State<AddEachProductsPage> {
   TextEditingController brand = TextEditingController();
+  TextEditingController name = TextEditingController();
+
   TextEditingController color = TextEditingController();
   TextEditingController availability = TextEditingController();
   TextEditingController id = TextEditingController();
   TextEditingController model = TextEditingController();
   TextEditingController price = TextEditingController();
   TextEditingController storageOptions = TextEditingController();
-
+  Fire f = Fire();
   PickedFile? _imageFile;
   String? url;
   final ImagePicker _picker = ImagePicker();
-  
+
   // Future chooseFile() async {
   //   await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
   //     setState(() {
@@ -132,11 +135,20 @@ class _AddEachProductsPageState extends State<AddEachProductsPage> {
                                 color: Colors.green,
                               )),
               ),
-              TextButton(
-                  onPressed: () {
-                    uploadFile(_imageFile);
-                  },
-                  child: Text('Upload Image')),
+              // TextButton(
+              //     onPressed: () {
+              //       uploadFile(_imageFile);
+              //     },
+              //     child: Text('Upload Image')),
+              Container(
+                child: TextField(
+                  controller: name,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Name",
+                  ),
+                ),
+              ),
               Container(
                 child: TextField(
                   controller: brand,
@@ -171,28 +183,28 @@ class _AddEachProductsPageState extends State<AddEachProductsPage> {
               SizedBox(
                 height: 10,
               ),
-              Container(
-                  child: TextField(
-                controller: storageOptions,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Storage Options",
-                ),
-              )),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                  child: TextField(
-                controller: id,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "id",
-                ),
-              )),
-              SizedBox(
-                height: 10,
-              ),
+              // Container(
+              //     child: TextField(
+              //   controller: storageOptions,
+              //   decoration: InputDecoration(
+              //     border: OutlineInputBorder(),
+              //     hintText: "Storage Options",
+              //   ),
+              // // )),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              // Container(
+              //     child: TextField(
+              //   controller: id,
+              //   decoration: InputDecoration(
+              //     border: OutlineInputBorder(),
+              //     hintText: "id",
+              //   ),
+              // )),
+              // SizedBox(
+              //   height: 10,
+              // ),
               // Container(
               //     child: TextField(
               //   controller: brand,
@@ -217,8 +229,24 @@ class _AddEachProductsPageState extends State<AddEachProductsPage> {
               ),
               TextButton(
                 onPressed: () {
-f.
+                  if(_imageFile==null){
 
+                  }else{
+                  uploadFile(_imageFile)
+                      .whenComplete(() => {
+                            f.uploadProducts(
+                                cata: widget.categetyName,
+                                name: name.text,
+                                brand: brand.text,
+                                model: model.text,
+                                price: price.text,
+                                availability: availability.text,
+                                url: url)
+                          })
+                      .whenComplete(() => {
+                        Navigator.pop(context)
+                      });
+                }
                 },
                 child: Text("Submit"),
               )
