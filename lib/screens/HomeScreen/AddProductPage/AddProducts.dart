@@ -1,10 +1,16 @@
 import 'package:admin_for_e_commerce/screens/HomeScreen/AddProductPage/componets/AddEachProductPage.dart';
+import 'package:admin_for_e_commerce/screens/Services/firebase/firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../global.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Add_products extends StatelessWidget {
+class Add_products extends StatefulWidget {
+  @override
+  _Add_productsState createState() => _Add_productsState();
+}
+
+class _Add_productsState extends State<Add_products> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   void navigate(context, categoryName) {
@@ -18,15 +24,23 @@ class Add_products extends StatelessWidget {
 
   FullScreenDialog _myDialog = new FullScreenDialog();
 
+  Fire f = Fire();
+  List dataList = [];
+  @override
+  void initState() {
+    super.initState();
+
+    print("Read Called");
+  }
+
+  getData() {
+    f.readCategory().then((value) => setState(() {
+          dataList = value;
+        }));
+  }
+
   @override
   Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance.collection('admin');
-
-    Stream documentStream = FirebaseFirestore.instance
-        .collection('admin')
-        .doc('Orders')
-        .snapshots();
-
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -35,62 +49,97 @@ class Add_products extends StatelessWidget {
           children: [
             Container(
               child: Expanded(
-                child: ListView(shrinkWrap: true, children: [
-                  CategeriesCard(
-                    image:
-                        "https://cdn.thewirecutter.com/wp-content/uploads/2020/04/laptops-lowres-2x1--1024x512.jpg",
-                    category: "Smartphone",
-                    numOfBrands: 18,
-                    ontap: () {
-                      navigate(context, "SmartPhone");
-                    },
+                  child: FutureBuilder(
+                      future: getData(),
+                      builder: (BuildContext context, data) {
+                        return data != null
+                            ? ListView.builder(
+                                itemCount: dataList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return CategeriesCard(
+                                    image:
+                                        dataList[index]['url'],
+                                    category: dataList[index]['name'],
+                                    numOfBrands: 18,
+                                    ontap: () {
+                                      navigate(context, "SmartPhone");
+                                    },
+                                  );
+                                })
+                            : Center(child: CircularProgressIndicator());
+                      })
+
+                  // ListView.builder(
+                  //   itemCount: dataList.length,
+                  //     itemBuilder: (BuildContext context, int index) {
+                  //   return     CategeriesCard(
+                  //     image:
+                  //         "https://cdn.thewirecutter.com/wp-content/uploads/2020/04/laptops-lowres-2x1--1024x512.jpg",
+                  //     category: "Smartphone",
+                  //     numOfBrands: 18,
+                  //     ontap: () {
+                  //       navigate(context, "SmartPhone");
+                  //     },
+                  //   );
+                  // }),
+                  // child: ListView(
+
+                  //   shrinkWrap: true, children: [
+                  // CategeriesCard(
+                  //   image:
+                  //       "https://cdn.thewirecutter.com/wp-content/uploads/2020/04/laptops-lowres-2x1--1024x512.jpg",
+                  //   category: "Smartphone",
+                  //   numOfBrands: 18,
+                  //   ontap: () {
+                  //     navigate(context, "SmartPhone");
+                  //   },
+                  // ),
+                  //   CategeriesCard(
+                  //     image:
+                  //         "https://cdn.thewirecutter.com/wp-content/uploads/2020/04/laptops-lowres-2x1--1024x512.jpg",
+                  //     category: "Mobiles",
+                  //     numOfBrands: 18,
+                  //     ontap: () {
+                  //       navigate(context, "Mobiles  ");
+                  //     },
+                  //   ),
+                  //   CategeriesCard(
+                  //     image:
+                  //         "https://l0dl1j3lc42iebd82042pgl2-wpengine.netdna-ssl.com/wp-content/uploads/sites/2/2019/10/FordEV-1200x800.jpeg",
+                  //     category: "Cars",
+                  //     numOfBrands: 18,
+                  //     ontap: () {},
+                  //   ),
+                  //   CategeriesCard(
+                  //     image:
+                  //         "https://www.incimages.com/uploaded_files/image/1920x1080/getty_883231284_200013331818843182490_335833.jpg",
+                  //     category: "Books",
+                  //     numOfBrands: 18,
+                  //     ontap: () {},
+                  //   ),
+                  //   CategeriesCard(
+                  //     image:
+                  //         "https://www.incimages.com/uploaded_files/image/1920x1080/getty_883231284_200013331818843182490_335833.jpg",
+                  //     category: "Books",
+                  //     numOfBrands: 18,
+                  //     ontap: () {},
+                  //   ),
+                  //   CategeriesCard(
+                  //     image:
+                  //         "https://www.incimages.com/uploaded_files/image/1920x1080/getty_883231284_200013331818843182490_335833.jpg",
+                  //     category: "Books",
+                  //     numOfBrands: 18,
+                  //     ontap: () {},
+                  //   ),
+                  //   CategeriesCard(
+                  //     image:
+                  //         "https://www.incimages.com/uploaded_files/image/1920x1080/getty_883231284_200013331818843182490_335833.jpg",
+                  //     category: "Books",
+                  //     numOfBrands: 18,
+                  //     ontap: () {},
+                  //   ),
+                  // ]),
                   ),
-                  CategeriesCard(
-                    image:
-                        "https://cdn.thewirecutter.com/wp-content/uploads/2020/04/laptops-lowres-2x1--1024x512.jpg",
-                    category: "Mobiles",
-                    numOfBrands: 18,
-                    ontap: () {
-                      navigate(context, "Mobiles  ");
-                    },
-                  ),
-                  CategeriesCard(
-                    image:
-                        "https://l0dl1j3lc42iebd82042pgl2-wpengine.netdna-ssl.com/wp-content/uploads/sites/2/2019/10/FordEV-1200x800.jpeg",
-                    category: "Cars",
-                    numOfBrands: 18,
-                    ontap: () {},
-                  ),
-                  CategeriesCard(
-                    image:
-                        "https://www.incimages.com/uploaded_files/image/1920x1080/getty_883231284_200013331818843182490_335833.jpg",
-                    category: "Books",
-                    numOfBrands: 18,
-                    ontap: () {},
-                  ),
-                  CategeriesCard(
-                    image:
-                        "https://www.incimages.com/uploaded_files/image/1920x1080/getty_883231284_200013331818843182490_335833.jpg",
-                    category: "Books",
-                    numOfBrands: 18,
-                    ontap: () {},
-                  ),
-                  CategeriesCard(
-                    image:
-                        "https://www.incimages.com/uploaded_files/image/1920x1080/getty_883231284_200013331818843182490_335833.jpg",
-                    category: "Books",
-                    numOfBrands: 18,
-                    ontap: () {},
-                  ),
-                  CategeriesCard(
-                    image:
-                        "https://www.incimages.com/uploaded_files/image/1920x1080/getty_883231284_200013331818843182490_335833.jpg",
-                    category: "Books",
-                    numOfBrands: 18,
-                    ontap: () {},
-                  ),
-                ]),
-              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),

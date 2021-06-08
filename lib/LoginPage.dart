@@ -1,8 +1,17 @@
 import 'package:admin_for_e_commerce/MainScreen.dart';
+import 'package:admin_for_e_commerce/screens/Services/firebase/firestore.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+
+
   TextEditingController email = TextEditingController();
+
   TextEditingController pass = TextEditingController();
 
   TextFormField buildPasswordFormField() {
@@ -40,7 +49,6 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
