@@ -17,7 +17,7 @@ class Fire {
       if (querySnapshot.docs.isNotEmpty) {
         for (var doc in querySnapshot.docs.toList()) {
           print(doc['url']);
-          var a = {'name': doc.id, 'url': doc['url']};
+          var a = {'name': doc.id, 'url': doc['url']??"Empty"};
           docs.add(a);
         }
         print(docs);
