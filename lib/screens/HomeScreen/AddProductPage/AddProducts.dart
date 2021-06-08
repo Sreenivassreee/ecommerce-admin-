@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:admin_for_e_commerce/GetX/GetX_add_category.dart';
 import 'package:admin_for_e_commerce/screens/HomeScreen/AddProductPage/componets/AddEachProductPage.dart';
 import 'package:admin_for_e_commerce/screens/Services/firebase/firestore.dart';
@@ -5,8 +7,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../global.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+import 'dart:io' as io;
 
 class Add_products extends StatefulWidget {
   @override
@@ -19,11 +25,13 @@ class _Add_productsState extends State<Add_products> {
   Future? myFuture;
   void navigate(context, categoryName) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => AddEachProductsPage(
-                  categetyName: categoryName,
-                ),),);
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddEachProductsPage(
+          categetyName: categoryName,
+        ),
+      ),
+    );
   }
 
   FullScreenDialog _myDialog = new FullScreenDialog();
@@ -55,17 +63,16 @@ class _Add_productsState extends State<Add_products> {
             Container(
               child: Expanded(
                   child: Obx(() => ListView.builder(
-                            itemCount: c?.data.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return CategeriesCard(
-                                image: c?.data[index]['url'] ?? " ",
-                                category: c?.data[index]['name'],
-                                numOfBrands: 18,
-                                ontap: () {
-                                  navigate(context, c?.data[index]['name']);
-                                },
-                              );
-                            
+                      itemCount: c?.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return CategeriesCard(
+                          image: c?.data[index]['url'] ?? " ",
+                          category: c?.data[index]['name'],
+                          numOfBrands: 18,
+                          ontap: () {
+                            navigate(context, c?.data[index]['name']);
+                          },
+                        );
                       }))
 
                   // ListView.builder(
@@ -182,6 +189,54 @@ class FullScreenDialogState extends State<FullScreenDialog> {
   TextEditingController caregoryController = new TextEditingController();
   TextEditingController urlController = new TextEditingController();
 
+  Fire f = Fire();
+  PickedFile? _imageFile;
+  String? url;
+  final ImagePicker _picker = ImagePicker();
+
+  void _onImageButtonPressed(ImageSource source,
+      {BuildContext? context}) async {
+    final pickedFile = await _picker.getImage(
+      source: source,
+    );
+    setState(() {
+      _imageFile = pickedFile;
+    });
+  }
+
+  Future<firebase_storage.UploadTask> uploadFile(file) async {
+    if (file == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('No file was selected'),
+      ));
+    }
+
+    firebase_storage.UploadTask uploadTask;
+
+    // Create a Reference to the file
+    firebase_storage.Reference ref =
+        firebase_storage.FirebaseStorage.instance.ref().child('Allcategorys');
+
+    final metadata = firebase_storage.SettableMetadata(
+        contentType: 'image/jpeg',
+        customMetadata: {'picked-file-path': file.path});
+
+    if (kIsWeb) {
+      uploadTask = ref.putData(await file.readAsBytes(), metadata);
+    } else {
+      uploadTask = ref.putFile(io.File(file.path), metadata);
+    }
+    var u = await (await uploadTask).ref.getDownloadURL();
+    print("url");
+
+    setState(() {
+      url = u;
+    });
+    print(url);
+
+    return Future.value(uploadTask);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -191,6 +246,23 @@ class FullScreenDialogState extends State<FullScreenDialog> {
         body: new Padding(
             child: new ListView(
               children: <Widget>[
+               InkWell(
+                onTap: () {
+                  _onImageButtonPressed(ImageSource.gallery, context: context);
+                  // chooseFile();
+                },
+                child: Container(
+                    height: 200,
+                    width: 200,
+                    child: _imageFile == null
+                        ? Center(child: Icon(Icons.image))
+                        : url == null
+                            ? Image.file(File(_imageFile!.path))
+                            : Icon(
+                                Icons.check,
+                                color: Colors.green,
+                              ),),
+              ),
                 new TextField(
                   controller: caregoryController,
                   decoration: InputDecoration(
@@ -209,7 +281,18 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    if (_imageFile == null) {
+                    print("select Images");
+                  } else {
+                    uploadFile(_imageFile)
+                        .whenComplete(() => {
+                              f.uploadCategories(name: caregoryController.text,url: url).whenComplete(() => {Navigator.pop(context)})
+                  });
+                  
+                  }
+
+        
+                    
                   },
                   child: Text("Save"),
                 )

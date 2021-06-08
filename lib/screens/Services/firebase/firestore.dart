@@ -32,7 +32,7 @@ class Fire {
   }
 
   Future<void> uploadProducts(
-      {cata,name, brand, model, price, availability,url}) async {
+      {cata, name, brand, model, price, availability, url}) async {
     try {
       await firestore
           .collection('admin')
@@ -46,8 +46,24 @@ class Fire {
         'model': model.toString(),
         'price': price.toString(),
         'url': url.toString(),
-        'availability':availability.toString()
+        'availability': availability.toString()
+      });
+    } catch (e) {
+      print(e);
+      print("Failed to upload");
+    }
+  }
 
+  Future<void> uploadCategories({name, url}) async {
+    try {
+      await firestore
+          .collection('admin')
+          .doc('Product_categories')
+          .collection('categories')
+          .doc("${name}")
+          .set({
+        'Category name': name.toString(),
+        'url': url.toString(),
       });
     } catch (e) {
       print(e);

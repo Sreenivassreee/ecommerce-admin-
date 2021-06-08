@@ -124,16 +124,17 @@ class _AddEachProductsPageState extends State<AddEachProductsPage> {
                   // chooseFile();
                 },
                 child: Container(
-                    height: 200,
-                    width: 200,
-                    child: _imageFile == null
-                        ? Center(child: Icon(Icons.image))
-                        : url == null
-                            ? Image.file(File(_imageFile!.path))
-                            : Icon(
-                                Icons.check,
-                                color: Colors.green,
-                              )),
+                  height: 200,
+                  width: 200,
+                  child: _imageFile == null
+                      ? Center(child: Icon(Icons.image))
+                      : url == null
+                          ? Image.file(File(_imageFile!.path))
+                          : Icon(
+                              Icons.check,
+                              color: Colors.green,
+                            ),
+                ),
               ),
               // TextButton(
               //     onPressed: () {
@@ -229,24 +230,22 @@ class _AddEachProductsPageState extends State<AddEachProductsPage> {
               ),
               TextButton(
                 onPressed: () {
-                  if(_imageFile==null){
-
-                  }else{
-                  uploadFile(_imageFile)
-                      .whenComplete(() => {
-                            f.uploadProducts(
-                                cata: widget.categetyName,
-                                name: name.text,
-                                brand: brand.text,
-                                model: model.text,
-                                price: price.text,
-                                availability: availability.text,
-                                url: url)
-                          })
-                      .whenComplete(() => {
-                        Navigator.pop(context)
-                      });
-                }
+                  if (_imageFile == null) {
+                    print("select Images");
+                  } else {
+                    uploadFile(_imageFile)
+                        .whenComplete(() => {
+                              f.uploadProducts(
+                                  cata: widget.categetyName,
+                                  name: name.text,
+                                  brand: brand.text,
+                                  model: model.text,
+                                  price: price.text,
+                                  availability: availability.text,
+                                  url: url)
+                            })
+                        .whenComplete(() => {Navigator.pop(context)});
+                  }
                 },
                 child: Text("Submit"),
               )
